@@ -1,0 +1,7 @@
+{
+  "name": "qr-authenticate",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
