@@ -16,8 +16,9 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vue/no-deprecated-slot-attribute': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    "comma-dangle": ["warn", "always",],
-    "semi": ["error", "always",],
+    "comma-dangle": ["warn", "always-multiline"],
+    "semi": ["error", "always"],
+     "no-unused-vars": "off",
   },
   overrides: [
     {

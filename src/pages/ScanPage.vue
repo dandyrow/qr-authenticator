@@ -1,5 +1,5 @@
 <template>
-  <base-layout title="Scan QR" :scanActive="scanActive">
+  <base-layout pageTitle="Scan QR" :scanActive="scanActive">
     <div class="scan-box">
       <h3>Scan the QR Code presented on your computer</h3>
     </div>
@@ -7,21 +7,18 @@
 </template>
 
 <script lang="ts">
-import BaseLayout from '@/components/base/Base-Layout.vue';
-import { defineComponent, } from '@vue/runtime-core';
-import { BarcodeScanner, } from '@capacitor-community/barcode-scanner';
-import { onIonViewDidEnter, onIonViewWillLeave, } from '@ionic/vue';
-import { camera, } from 'ionicons/icons';
-import { ref, } from 'vue';
+import { defineComponent } from '@vue/runtime-core';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { onIonViewDidEnter, onIonViewWillLeave } from '@ionic/vue';
+import { camera } from 'ionicons/icons';
+import { ref } from 'vue';
 
 export default defineComponent ({
-  components: {
-    BaseLayout,
-  },
+  name: 'ScanPage',
 
   setup() {
 
-    const scanActive = ref<boolean>(false,);
+    const scanActive = ref<boolean>(false);
 
     const startScan = async () => {
       await checkPermissions();
@@ -36,7 +33,7 @@ export default defineComponent ({
 
     const checkPermissions = async () => {
       //TODO: increase permission checking/handling
-      const status = await BarcodeScanner.checkPermission({ force: true, },);
+      const status = await BarcodeScanner.checkPermission({ force: true });
       if (status.granted) {
         return true;
       }
@@ -45,21 +42,20 @@ export default defineComponent ({
 
     onIonViewDidEnter(() => {
       startScan();
-    },);
+    });
 
     //Stop scanning when leave to a different tab
     onIonViewWillLeave(() => {
       BarcodeScanner.stopScan();
       scanActive.value = false;
-    },);
+    });
 
     return {
-      startScan,
       camera,
       scanActive,
     };
   },
-},);
+});
 </script>
 
 <style scoped>

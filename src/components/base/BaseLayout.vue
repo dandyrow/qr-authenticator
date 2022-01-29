@@ -2,36 +2,38 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start">
+        <!-- <ion-buttons slot="start">
           <ion-back-button :default-href="defaultBackLink"></ion-back-button>
-        </ion-buttons>
-        <ion-title>{{ title }}</ion-title>
+        </ion-buttons> -->
+        <ion-title>{{ pageTitle }}</ion-title>
         <!--3 dot menu with settigns about and logout-->
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true" v-bind:class="{ 'scan-active': scanActive }">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">{{ title }}</ion-title>
+          <ion-title size="large">{{ pageTitle }}</ion-title>
         </ion-toolbar>
       </ion-header>
-      <slot />
+      <slot></slot>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, } from 'vue';
+import { defineComponent } from 'vue';
 import {
   IonPage,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
+  IonButtons,
+  IonBackButton,
 } from '@ionic/vue';
 
 export default defineComponent({
-  name: "Base-Layout",
+  name: 'BaseLayout',
 
   components: {
     IonPage,
@@ -42,7 +44,7 @@ export default defineComponent({
   },
 
   props: {
-    title: {
+    pageTitle: {
       type: String,
       required: true,
     },
@@ -55,11 +57,7 @@ export default defineComponent({
       default: false,
     },
   },
-
-  setup() {
-    return;
-  },
-},);
+});
 </script>
 
 <style scoped>
