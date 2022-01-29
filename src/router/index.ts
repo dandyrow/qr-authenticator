@@ -1,20 +1,27 @@
-import { createRouter, createWebHistory, } from '@ionic/vue-router';
-import { RouteRecordRaw, } from 'vue-router';
+import { createRouter, createWebHistory } from '@ionic/vue-router';
+import { Router, RouteRecordRaw } from 'vue-router';
 import TabsPage from '@/components/base/Tabs.vue';
+import Paths from './routePaths';
+import introGuard from './guards/introGuard';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/scan',
+    redirect: Paths.LOGIN,
   },
   {
-    path: '/tabs/',
+    path: Paths.LOGIN,
+    component: () => import('@/pages/LoginPage.vue'),
+  },
+  {
+    path: Paths.INTRO,
+    component: () => import('@/pages/IntroPage.vue'),
+  },
+  {
+    path: Paths.TABS,
     component: TabsPage,
+    meta: { requiredAuth: true },
     children: [
-      {
-        path: '',
-        redirect: '/tabs/scan',
-      },
       {
         path: 'account',
         component: () => import('@/pages/AccountPage.vue'),
@@ -31,9 +38,11 @@ const routes: Array<RouteRecordRaw> = [
   },
 ];
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL,),
+const router: Router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes,
-},);
+});
+
+router.beforeEach(introGuard);
 
 export default router;
