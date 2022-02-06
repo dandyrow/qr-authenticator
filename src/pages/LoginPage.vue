@@ -46,6 +46,13 @@ import { defineComponent, reactive, toRefs } from "vue";
 import { Router, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
+interface FormInput {
+  username: string,
+  usernameErr: boolean,
+  password: string,
+  passwordErr: boolean,
+}
+
 export default defineComponent({
   name: "LoginPage",
 
@@ -61,7 +68,7 @@ export default defineComponent({
     const store = useStore();
     const router: Router = useRouter();
 
-    const formInput = reactive({
+    const formInput = reactive<FormInput>({
       username: "",
       usernameErr: false,
       password: "",

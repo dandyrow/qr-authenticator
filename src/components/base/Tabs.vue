@@ -32,9 +32,10 @@ import {
   IonPage,
   IonRouterOutlet,
 } from "@ionic/vue";
+import { defineComponent } from "@vue/runtime-core";
 import { person, qrCode, reader } from "ionicons/icons";
 
-export default {
+export default defineComponent({
   name: "TabPage",
   components: {
     IonLabel,
@@ -59,5 +60,5 @@ export default {
       tabNames,
     };
   },
-};
+});
 </script>

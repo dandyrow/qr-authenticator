@@ -18,7 +18,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     "comma-dangle": ["warn", "always-multiline"],
     "semi": ["error", "always"],
-     "no-unused-vars": "off",
+    "no-unused-vars": "off",
   },
   overrides: [
     {

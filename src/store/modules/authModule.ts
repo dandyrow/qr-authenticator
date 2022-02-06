@@ -1,15 +1,19 @@
 import { AuthData, AuthState } from "@/types/stateTypes";
+import { InjectionKey } from "vue";
 import { ActionTree, Commit, MutationTree } from "vuex";
 
 const state: AuthState = {
     authData: {
-        token: '',
+        accessToken: '',
         refreshToken: '',
-        tokenExp: '',
+        tokenExp: new Date(),
         userId: '',
-        userEmail: '',
+        userName: '',
     },
-    authenticated: false,
+    authStatus: {
+        authenticated: false,
+        authStatusCode: 0,
+    },
 };
 
 const getters = {};

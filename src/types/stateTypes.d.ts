@@ -5,16 +5,21 @@ export interface IntroState {
 }
 
 export interface AuthData {
-  token: string;
+  accessToken: string;
   refreshToken: string;
-  tokenExp: string;
+  tokenExp: Date;
   userId: string;
-  userEmail: string;
+  userName: string;
+}
+
+export interface AuthStatus {
+  authenticated: boolean;
+  authStatusCode: number;
 }
 
 export interface AuthState {
   authData: AuthData;
-  authenticated: boolean;
+  authStatus: AuthStatus;
 }
 
 export interface RootState {
