@@ -1,28 +1,50 @@
 <template>
-    <base-layout pageTitle="Login">
-      <form class="ion-padding" @submit.prevent="login">
-        <ion-list>
-            <ion-item>
-                <ion-label position="floating">Email</ion-label>
-                <ion-input type="email" v-model="userDetails.email"></ion-input>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>
-                <ion-label position="floating">Password</ion-label>
-                <ion-input type="password" v-model="userDetails.password"></ion-input>
-            </ion-item>
-        </ion-list>
-        <ion-button type="submit" expand="full">Login</ion-button>
+  <base-layout pageTitle="Login">
+    <form class="ion-padding" @submit.prevent="login">
+      <ion-list>
+        <ion-item>
+          <ion-label
+            :color="formInput.usernameErr ? 'danger' : ''"
+            position="floating"
+          >
+            Username
+            <span v-if="formInput.usernameErr">
+              - Please enter your username
+            </span>
+          </ion-label>
+          <ion-input v-model="formInput.username"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-item>
+          <ion-label
+            :color="formInput.passwordErr ? 'danger' : ''"
+            position="floating"
+          >
+            Password
+            <span v-if="formInput.passwordErr">
+              - Please enter your password
+            </span>
+          </ion-label>
+          <ion-input type="password" v-model="formInput.password"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button
+        type="submit"
+        expand="full"
+        :disabled="formInput.username === '' || formInput.password === ''"
+      >
+        Login
+      </ion-button>
     </form>
-    </base-layout>
+  </base-layout>
 </template>
 
 <script lang="ts">
-import { IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/vue';
-import { defineComponent  } from 'vue';
-import { Router, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import { IonList, IonItem, IonLabel, IonInput, IonButton } from "@ionic/vue";
+import { defineComponent, reactive, toRefs } from "vue";
+import { Router, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "LoginPage",
@@ -39,24 +61,27 @@ export default defineComponent({
     const store = useStore();
     const router: Router = useRouter();
 
-    const userDetails = {
-      email: '',
-      password: '',
-    };
+    const formInput = reactive({
+      username: "",
+      usernameErr: false,
+      password: "",
+      passwordErr: false,
+    });
 
     const login = async () => {
-      if (userDetails.email && userDetails.password) {
-        await store.dispatch('auth/login', userDetails);
-        if (store.state.authenticated) {
-          router.replace({ path: '/tabs/scan' });
-        } else {
-          alert("Login Failed");
-        }
+      const { username, usernameErr, password, passwordErr } =
+        toRefs(formInput);
+
+      usernameErr.value = username.value === "";
+      passwordErr.value = password.value === "";
+
+      if (usernameErr.value || passwordErr.value) {
+        return;
       }
     };
 
     return {
-      userDetails,
+      formInput,
       login,
     };
   },
