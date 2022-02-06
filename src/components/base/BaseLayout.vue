@@ -5,11 +5,11 @@
         <!-- <ion-buttons slot="start">
           <ion-back-button :default-href="defaultBackLink"></ion-back-button>
         </ion-buttons> -->
-        <ion-title>{{ pageTitle }}</ion-title>
+        <ion-title data-title="title">{{ pageTitle }}</ion-title>
         <!--3 dot menu with settigns about and logout-->
       </ion-toolbar>
     </ion-header>
-    <ion-content :fullscreen="true" v-bind:class="{ 'scan-active': scanActive }">
+    <ion-content :fullscreen="true" v-show="!scanActive">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">{{ pageTitle }}</ion-title>
@@ -59,9 +59,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.scan-active {
-  visibility: hidden;
-}
-</style>
