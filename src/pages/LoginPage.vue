@@ -47,10 +47,10 @@ import { Router, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 interface FormInput {
-  username: string,
-  usernameErr: boolean,
-  password: string,
-  passwordErr: boolean,
+  username: string;
+  usernameErr: boolean;
+  password: string;
+  passwordErr: boolean;
 }
 
 export default defineComponent({
@@ -84,6 +84,10 @@ export default defineComponent({
 
       if (usernameErr.value || passwordErr.value) {
         return;
+      }
+
+      if (username.value === "dandyrow" && password.value === "manbob") {
+        router.push("/tabs/scan");
       }
     };
 

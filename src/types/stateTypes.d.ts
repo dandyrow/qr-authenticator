@@ -14,7 +14,7 @@ export interface AuthData {
 
 export interface AuthStatus {
   authenticated: boolean;
-  authStatusCode: number;
+  code: number;
 }
 
 export interface AuthState {
@@ -25,6 +25,11 @@ export interface AuthState {
 export interface RootState {
   intro: IntroState;
   auth: AuthState;
+}
+
+export interface UserCreds {
+  username: string,
+  password: string,
 }
 
 export type StoreRestored = Store<RootState> & { restored: Promise<boolean> };

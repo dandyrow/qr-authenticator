@@ -1,55 +1,53 @@
-import { AuthData, AuthState } from "@/types/stateTypes";
-import { InjectionKey } from "vue";
 import { ActionTree, Commit, MutationTree } from "vuex";
+import { AuthData, AuthState, AuthStatus, UserCreds } from "@/types/stateTypes";
+import { requestTokens } from "@/api/auth.api";
+import { renderSlot } from "vue";
 
 const state: AuthState = {
-    authData: {
-        accessToken: '',
-        refreshToken: '',
-        tokenExp: new Date(),
-        userId: '',
-        userName: '',
-    },
-    authStatus: {
-        authenticated: false,
-        authStatusCode: 0,
-    },
+  authData: {
+    accessToken: "",
+    refreshToken: "",
+    tokenExp: new Date(),
+    userId: "",
+    userName: "",
+  },
+  authStatus: {
+    authenticated: false,
+    code: 0,
+  },
 };
 
 const getters = {};
 
 const mutations: MutationTree<AuthState> = {
-    saveAuthToken(state: AuthState, token: string) {
-        //TODO: Decode JWT payload
-        const newAuthData: AuthData = {
-            token: '',
-            refreshToken: '',
-            tokenExp: '',
-            userId: '',
-            userEmail: '',
-        };
-        state.authData = newAuthData;
-    },
+  saveAuthStatus(state: AuthState, res: Response) {
+    state.authStatus = {
+      authenticated: res.ok ? true : false,
+      code: res.status,
+    };
+  },
 
-    saveAuthenticatedStatus(state: AuthState, status: boolean) {
-        state.authenticated = status;
-    },
+  
 };
 
 const actions: ActionTree<AuthState, any> = {
-    login({ commit }: { commit: Commit }, userDetails: { email: string, password: string }) {
-        if (userDetails.email === 'dandyrow' && userDetails.password === 'manbob') {
-            commit('saveAuthenticatedStatus', true);
-        } else {
-            commit('saveAuthenticatedStatus', false);
-        }
-    },
+  async login({ commit }, userCreds: UserCreds) {
+    const res = await requestTokens(userCreds);
+    commit('saveAuthStatus', res);
+  },
+};
+
+const saveResponse = (res: Response) => {
+  const status: AuthStatus = {
+    authenticated: res.ok ? true : false,
+    code: res.status,
+  };
 };
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
 };
