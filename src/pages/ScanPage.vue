@@ -1,7 +1,7 @@
 <template>
   <base-layout pageTitle="Scan QR" :scanActive="scanActive">
     <div class="scan-box">
-      <h3>Scan the QR Code presented on your computer</h3>
+      <h6>Place the QR code presented on your computer inside this box</h6>
     </div>
   </base-layout>
 </template>
@@ -59,19 +59,18 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-h3 {
-  position: relative;
-  top: -28%;
+h6 {
   text-align: center;
+  margin: auto 1rem;
 }
 
 .scan-box {
   content: '';
-  display: flex;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   position: absolute;
-  width:70vw; 
-  height:70vw;
+  width:75vw; 
+  height:75vw;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -86,11 +85,6 @@ h3 {
     top: 50%;
     width:50vh; 
     height:50vh;
-  }
-
-  h3 {
-    width: max-content;
-    flex-shrink: 0;
   }
 }
 </style>
