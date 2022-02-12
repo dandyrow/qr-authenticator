@@ -1,6 +1,9 @@
 <template>
-  <base-layout pageTitle="Login">
-    <form class="ion-padding" @submit.prevent="login">
+  <base-layout page-title="Login">
+    <form
+      class="ion-padding"
+      @submit.prevent="login"
+    >
       <ion-list>
         <ion-item>
           <ion-label
@@ -12,7 +15,7 @@
               - Please enter your username
             </span>
           </ion-label>
-          <ion-input v-model="formInput.username"></ion-input>
+          <ion-input v-model="formInput.username" />
         </ion-item>
       </ion-list>
       <ion-list>
@@ -26,7 +29,10 @@
               - Please enter your password
             </span>
           </ion-label>
-          <ion-input type="password" v-model="formInput.password"></ion-input>
+          <ion-input
+            v-model="formInput.password"
+            type="password"
+          />
         </ion-item>
       </ion-list>
       <ion-button
@@ -40,11 +46,11 @@
   </base-layout>
 </template>
 
-<script lang="ts">
-import { IonList, IonItem, IonLabel, IonInput, IonButton } from "@ionic/vue";
-import { defineComponent, reactive, toRefs } from "vue";
-import { Router, useRouter } from "vue-router";
-import { useStore } from "vuex";
+<script setup lang="ts">
+import { IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/vue';
+import { reactive, toRefs } from 'vue';
+import { Router, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 interface FormInput {
   username: string;
@@ -53,48 +59,28 @@ interface FormInput {
   passwordErr: boolean;
 }
 
-export default defineComponent({
-  name: "LoginPage",
+const store = useStore();
+const router: Router = useRouter();
 
-  components: {
-    IonList,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonButton,
-  },
-
-  setup() {
-    const store = useStore();
-    const router: Router = useRouter();
-
-    const formInput = reactive<FormInput>({
-      username: "",
-      usernameErr: false,
-      password: "",
-      passwordErr: false,
-    });
-
-    const login = async () => {
-      const { username, usernameErr, password, passwordErr } =
-        toRefs(formInput);
-
-      usernameErr.value = username.value === "";
-      passwordErr.value = password.value === "";
-
-      if (usernameErr.value || passwordErr.value) {
-        return;
-      }
-
-      if (username.value === "dandyrow" && password.value === "manbob") {
-        router.push("/tabs/scan");
-      }
-    };
-
-    return {
-      formInput,
-      login,
-    };
-  },
+const formInput = reactive<FormInput>({
+  username: '',
+  usernameErr: false,
+  password: '',
+  passwordErr: false,
 });
+
+const login = async () => {
+  const { username, usernameErr, password, passwordErr } = toRefs(formInput);
+
+  usernameErr.value = username.value === '';
+  passwordErr.value = password.value === '';
+
+  if (usernameErr.value || passwordErr.value) {
+    return;
+  }
+
+  if (username.value === 'dandyrow' && password.value === 'manbob') {
+    router.push('/tabs/scan');
+  }
+};
 </script>

@@ -1,14 +1,10 @@
 <template>
-  <base-layout pageTitle="Authentication Log">
+  <base-layout page-title="Authentication Log">
+    <ion-list>
+      <ion-item />
+    </ion-list>
   </base-layout>
 </template>
 
-<script lang="ts">
-
-import { defineComponent } from '@vue/runtime-core';
-
-export default defineComponent ({
-  name: 'LogPage',
-  
-});
+<script setup lang="ts">
 </script>

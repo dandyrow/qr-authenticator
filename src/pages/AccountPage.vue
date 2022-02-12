@@ -1,12 +1,6 @@
 <template>
-  <base-layout pageTitle="Account Info">
-  </base-layout>
+  <base-layout page-title="Account Info" />
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@vue/runtime-core';
-
-export default defineComponent ({
-  name: 'AccountPage',
-});
+<script setup lang="ts">
 </script>
