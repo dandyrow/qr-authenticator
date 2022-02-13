@@ -1,9 +1,10 @@
 <template>
   <BaseLayout
     page-title="Scan QR"
+    toolbar-button="menu"
     :scan-active="qrScanner.scanActive"
   >
-    <scan-box />
+    <scanBox />
   </BaseLayout>
 </template>
 

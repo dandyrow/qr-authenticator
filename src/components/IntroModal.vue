@@ -1,35 +1,25 @@
 <template>
   <ion-modal :is-open="openIntro">
-    <ion-toolbar>
-      <ion-title>Intro Modal</ion-title>
-      <ion-buttons slot="end">
-        <ion-button @click="closeIntro()">
-          <ion-icon
-            slot="icon-only"
-            :icon="close"
-          />
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
+    <Toolbar
+      page-title="Welcome!"
+      button="close"
+      :close-func="closeIntro"
+    />
     <ion-content class="ion-padding">
-      <p>Welcome to QR Authenticate! The purpose of this app is as part of the larger QR auth system. This app will be used to scan </p>
+      <p>
+        Welcome to QR Authenticate! The purpose of this app is as part of the
+        larger QR auth system. This app will be used to scan
+      </p>
     </ion-content>
   </ion-modal>
 </template>
 
 <script setup lang="ts">
-import {
-  IonModal,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonTitle,
-  IonContent,
-  IonIcon,
-} from '@ionic/vue';
-import { close } from 'ionicons/icons';
+import { IonModal, IonContent } from '@ionic/vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+
+import Toolbar from './Toolbar.vue';
 
 const store = useStore();
 

@@ -1,18 +1,13 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar>
-        <!-- <ion-buttons slot="start">
-          <ion-back-button :default-href="defaultBackLink"></ion-back-button>
-        </ion-buttons> -->
-        <ion-title data-title="title">
-          {{ pageTitle }}
-        </ion-title>
-        <!--3 dot menu with settigns about and logout-->
-      </ion-toolbar>
+      <Toolbar 
+        :page-title="pageTitle" 
+        :button="toolbarButton" 
+      />
     </ion-header>
-    <ion-content
-      :fullscreen="true"
+    <ion-content 
+      :fullscreen="true" 
       :class="{ hide: scanActive }"
     >
       <ion-header collapse="condense">
@@ -28,24 +23,24 @@
 </template>
 
 <script setup lang="ts">
+import { Ref } from 'vue';
 import {
   IonPage,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonButtons,
-  IonBackButton,
 } from '@ionic/vue';
+import Toolbar from '../Toolbar.vue';
 
 interface Props {
   pageTitle: string;
-  defaultBackLink?: string;
-  scanActive?: boolean;
+  toolbarButton?: 'close' | 'menu';
+  scanActive?: Ref<boolean> | boolean | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  defaultBackLink: '',
+  toolbarButton: undefined,
   scanActive: false,
 });
 </script>
