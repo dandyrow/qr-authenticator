@@ -31,7 +31,7 @@ const app = createApp(App)
   .use(router)
   .use(store);
 
-app.component('base-layout', BaseLayout);
+app.component('BaseLayout', BaseLayout);
   
 router.isReady().then(() => {
   app.mount('#app');

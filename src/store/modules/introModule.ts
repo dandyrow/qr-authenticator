@@ -18,7 +18,6 @@ const mutations: MutationTree<IntroState> = {
 };
 
 export default {
-  namespaced: true,
   state,
   getters,
   mutations,

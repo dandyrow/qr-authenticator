@@ -13,10 +13,10 @@ const routes: Array<RouteRecordRaw> = [
     path: Paths.LOGIN,
     component: () => import('@/pages/LoginPage.vue'),
   },
-  {
-    path: Paths.INTRO,
-    component: () => import('@/pages/IntroPage.vue'),
-  },
+  // {
+  //   path: Paths.INTRO,
+  //   component: () => import('@/pages/IntroPage.vue'),
+  // },
   {
     path: Paths.TABS,
     component: TabsPage,
@@ -43,6 +43,6 @@ const router: Router = createRouter({
   routes,
 });
 
-router.beforeEach(introGuard);
+// router.beforeEach(introGuard);
 
 export default router;

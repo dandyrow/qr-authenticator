@@ -1,10 +1,10 @@
 <template>
-  <base-layout
+  <BaseLayout
     page-title="Scan QR"
     :scan-active="qrScanner.scanActive"
   >
     <scan-box />
-  </base-layout>
+  </BaseLayout>
 </template>
 
 <script setup lang="ts">

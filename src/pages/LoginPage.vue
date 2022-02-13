@@ -1,5 +1,5 @@
 <template>
-  <base-layout page-title="Login">
+  <BaseLayout page-title="Login">
     <form
       class="ion-padding"
       @submit.prevent="login"
@@ -43,7 +43,8 @@
         Login
       </ion-button>
     </form>
-  </base-layout>
+  </BaseLayout>
+  <IntroModal />
 </template>
 
 <script setup lang="ts">
@@ -51,6 +52,8 @@ import { IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/vue';
 import { reactive, toRefs } from 'vue';
 import { Router, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+
+import IntroModal from '@/components/IntroModal.vue';
 
 interface FormInput {
   username: string;
