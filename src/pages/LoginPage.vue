@@ -43,8 +43,8 @@
         Login
       </ion-button>
     </form>
+    <IntroModal />
   </BaseLayout>
-  <IntroModal />
 </template>
 
 <script setup lang="ts">
@@ -83,7 +83,7 @@ const login = async () => {
   }
 
   if (username.value === 'dandyrow' && password.value === 'manbob') {
-    router.push('/tabs/scan');
+    router.replace('/tabs/scan');
   }
 };
 </script>
