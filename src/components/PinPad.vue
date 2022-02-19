@@ -42,7 +42,10 @@
         class="ion-no-padding"
         @click="pin.pop()"
       >
-        <ion-icon slot="icon-only" :icon="backspaceOutline" />
+        <ion-icon
+          slot="icon-only"
+          :icon="backspaceOutline"
+        />
       </ion-button>
     </div>
   </div>
@@ -58,7 +61,7 @@ import {
 } from 'ionicons/icons';
 
 const emits = defineEmits<{
-    (e: 'pinEntered'): void
+  (e: 'pinEntered', pin: number): void;
 }>();
 
 const buttons = [7, 8, 9, 4, 5, 6, 1, 2, 3];
@@ -67,7 +70,8 @@ const pin = ref<Array<number>>([]);
 function enterNum(num: number) {
   const length = pin.value.push(num);
   if (length === 4) {
-      emits('pinEntered');
+    const pinString = pin.value.toString().replaceAll(',', '');
+    emits('pinEntered', parseInt(pinString));
   }
 }
 </script>

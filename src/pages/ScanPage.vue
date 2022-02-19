@@ -12,7 +12,7 @@
     />
     <AuthModal
       :is-open="authIsOpen"
-      @close="modalClosed()"
+      @close="modalClosed"
     />
   </BaseLayout>
 </template>

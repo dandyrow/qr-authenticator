@@ -2,9 +2,16 @@
   <BaseModal 
     modal-title="Authenticating..." 
     :is-open="isOpen" 
-    @close="closeModal()"
+    @close="closeModal"
   >
-    <PinPad @pin-entered="closeModal()" />
+    <PinPad
+      v-if="authenticating"
+      @pin-entered="checkPin"
+    />
+    <AuthResult
+      v-else
+      :success="authSuccess"
+    />
   </BaseModal>
 </template>
 
@@ -14,6 +21,7 @@ import { AvailableResult, NativeBiometric } from 'capacitor-native-biometric';
 
 import PinPad from '../PinPad.vue';
 import BaseModal from './BaseModal.vue';
+import AuthResult from '../AuthResult.vue';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -23,8 +31,8 @@ const emits = defineEmits<{
   (e: 'close'): void;
 }>();
 
-//TODO: Check pin & do stuff after auth with pin or biometrics
-
+const authenticating = ref(true);
+const authSuccess = ref(false);
 const title = ref('Authenticate');
 const { isOpen } = toRefs(props);
 
@@ -35,8 +43,21 @@ const biometricOptions = {
   negativeButtonText: 'Use Passcode',
 };
 
+//ISSUE: breaks when using back button to close modal. Need back button handler
 function closeModal() {
   emits('close');
+  authenticating.value = true;
+}
+
+function checkPin(pinNum: number) {
+  if (pinNum === 1234) {
+    authenticating.value = false;
+    authSuccess.value = true;
+  } else {
+    //TODO: Needs changed to show error about pin being wrong instead of complete auth failure
+    authenticating.value = false;
+    authSuccess.value = false;
+  }
 }
 
 async function biometrics() {
@@ -44,9 +65,10 @@ async function biometrics() {
   const isAvailable: boolean = result.isAvailable;
 
   if (isAvailable) {
-    await NativeBiometric.verifyIdentity(biometricOptions).then(() =>
-      closeModal(),
-    );
+    await NativeBiometric.verifyIdentity(biometricOptions).then(() => {
+      authenticating.value = false;
+      authSuccess.value = true;
+    });
   }
 }
 
