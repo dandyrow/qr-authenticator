@@ -4,6 +4,7 @@
       <Toolbar 
         :page-title="pageTitle" 
         :button="toolbarButton" 
+        :close-func="closeFunc"
       />
     </ion-header>
     <ion-content 
@@ -36,11 +37,15 @@ import Toolbar from '../Toolbar.vue';
 interface Props {
   pageTitle: string;
   toolbarButton?: 'close' | 'menu';
+  closeFunc?: () => void,
   scanActive?: Ref<boolean> | boolean | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   toolbarButton: undefined,
+  closeFunc: () => {
+    console.error('Close function not handed into Toolbar component!');
+  },
   scanActive: false,
 });
 </script>
