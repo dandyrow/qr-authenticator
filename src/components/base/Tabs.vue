@@ -47,6 +47,6 @@ import { person, qrCode, reader } from 'ionicons/icons';
 const tabNames = {
   tab1: 'Account Info',
   tab2: 'Scan QR Code',
-  tab3: 'Authentication Log',
+  tab3: 'Auth Log',
 };
 </script>

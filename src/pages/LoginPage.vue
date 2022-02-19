@@ -53,7 +53,7 @@ import { reactive, toRefs } from 'vue';
 import { Router, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-import IntroModal from '@/components/IntroModal.vue';
+import IntroModal from '@/components/modals/IntroModal.vue';
 
 interface FormInput {
   username: string;
