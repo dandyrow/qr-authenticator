@@ -1,12 +1,11 @@
 <template>
   <BaseLayout
     page-title="Scan QR"
-    toolbar-button="menu"
     :scan-active="qrScanner.scanActive"
   >
-    <scanBox />
+    <ScanBox />
     <ion-alert
-      :is-open="!permission"
+      :is-open="!cameraPermission"
       header="Need Permission"
       message="This app needs permission to access your camera to scan QR codes."
       :buttons="alertButtons"
@@ -19,20 +18,18 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import { onIonViewDidEnter, onIonViewWillLeave, IonAlert } from '@ionic/vue';
 
-import scanBox from '@/components/scanBox.vue';
+import ScanBox from '@/components/scanBox.vue';
 import QRScanner from '@/services/qrScanner';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import AuthModal from '@/components/modals/AuthModal.vue';
 
-const router = useRouter();
-let authIsOpen = ref(false);
+const cameraPermission = ref(true);
+const authIsOpen = ref(false);
 
 const qrScanner = new QRScanner();
-const permission = ref(true);
 const alertButtons = [{
             text: 'Cancel',
             role: 'cancel',
@@ -45,10 +42,10 @@ const alertButtons = [{
           }];
 
 async function scan() {
-  if (permission.value) {
+  cameraPermission.value = await qrScanner.checkPermissions();
+  if (cameraPermission.value) {
     const result = await qrScanner.startScan();
     authIsOpen.value = true;
-    // router.push('/auth');
   }
 }
 
@@ -57,10 +54,7 @@ function modalClosed() {
   scan();
 }
 
-onIonViewDidEnter(async () => {
-  permission.value = await qrScanner.checkPermissions();
-  scan();
-});
+onIonViewDidEnter(async () => scan());
 
 //Stop scanning when leave to a different tab
 onIonViewWillLeave(() => qrScanner.stopScan());

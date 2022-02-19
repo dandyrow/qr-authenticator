@@ -1,6 +1,6 @@
-<template>
+<template #buttons>
   <ion-buttons slot="end">
-    <ion-button @click="emit('close')">
+    <ion-button>
       <ion-icon
         slot="icon-only" 
         :icon="close" 
@@ -12,8 +12,4 @@
 <script setup lang="ts">
 import { close } from 'ionicons/icons';
 import { IonButtons, IonButton, IonIcon } from '@ionic/vue';
-
-const emit = defineEmits<{
-  (e: 'close'): void;
-}>();
 </script>

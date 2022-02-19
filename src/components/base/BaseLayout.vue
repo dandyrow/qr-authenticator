@@ -1,11 +1,12 @@
 <template>
   <ion-page>
     <ion-header>
-      <Toolbar 
-        :page-title="pageTitle" 
-        :button="toolbarButton" 
-        :close-func="closeFunc"
-      />
+      <ion-toolbar>
+        <ion-title data-title="title">
+          {{ pageTitle }}
+        </ion-title>
+        <ElipsesMenu />
+      </ion-toolbar>
     </ion-header>
     <ion-content 
       :fullscreen="true" 
@@ -32,20 +33,14 @@ import {
   IonTitle,
   IonContent,
 } from '@ionic/vue';
-import Toolbar from '../Toolbar.vue';
+import ElipsesMenu from './ElipsesMenu.vue';
 
 interface Props {
   pageTitle: string;
-  toolbarButton?: 'close' | 'menu';
-  closeFunc?: () => void,
   scanActive?: Ref<boolean> | boolean | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  toolbarButton: undefined,
-  closeFunc: () => {
-    console.error('Close function not handed into Toolbar component!');
-  },
   scanActive: false,
 });
 </script>
