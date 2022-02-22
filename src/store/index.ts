@@ -12,6 +12,12 @@ const storage: AsyncStorage = new CapacitorStorage();
 const vuexCapacitor = new VuexPersistence<RootState>({
     asyncStorage: true,
     storage: storage,
+    modules: ['intro'],
+});
+
+const vuexSession = new VuexPersistence<RootState>({
+    storage: window.sessionStorage,
+    modules: ['auth'],
 });
 
 export const key: InjectionKey<Store<RootState>> = Symbol();
@@ -22,7 +28,7 @@ export const store: Store<RootState> = createStore<RootState>({
         auth: authModule,
     },
 
-    plugins: [vuexCapacitor.plugin],
+    plugins: [vuexCapacitor.plugin, vuexSession.plugin],
 });
 
 /***

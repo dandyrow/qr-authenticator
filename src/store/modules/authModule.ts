@@ -1,6 +1,5 @@
 import { ActionTree, Commit, MutationTree } from "vuex";
 import { AuthData, AuthState, AuthStatus, UserCreds } from "@/types/stateTypes";
-import { requestTokens } from "@/api/auth.api";
 import { renderSlot } from "vue";
 
 const state: AuthState = {
@@ -30,13 +29,6 @@ const mutations: MutationTree<AuthState> = {
   
 };
 
-const actions: ActionTree<AuthState, any> = {
-  async login({ commit }, userCreds: UserCreds) {
-    const res = await requestTokens(userCreds);
-    commit('saveAuthStatus', res);
-  },
-};
-
 const saveResponse = (res: Response) => {
   const status: AuthStatus = {
     authenticated: res.ok ? true : false,
@@ -48,6 +40,5 @@ export default {
   namespaced: true,
   state,
   getters,
-  actions,
   mutations,
 };

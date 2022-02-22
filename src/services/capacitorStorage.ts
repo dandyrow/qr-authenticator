@@ -1,6 +1,6 @@
 
-import { Storage } from "@capacitor/storage";
-import { AsyncStorage } from "vuex-persist";
+import { Storage } from '@capacitor/storage';
+import { AsyncStorage } from 'vuex-persist';
 
 class CapacitorStorage implements AsyncStorage {
     _config?: { name: string; };

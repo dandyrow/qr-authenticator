@@ -1,13 +1,15 @@
-import { UserCreds } from "@/types/stateTypes";
+const authUrl = 'http://localhost:8080/login';
 
-const APIURL = "http://localhost:8080";
+interface Tokens {
+  accessToken: string,
+  refreshToken: string,
+}
 
-export const requestTokens = async ( userCreds: UserCreds ): Promise<Response> => {
-  return fetch(APIURL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userCreds),
+export async function fetchTokens(username: string, password: string): Promise<Tokens> {
+  const res = await fetch('authUrl', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
   });
-};
+
+  return res.json();
+}
