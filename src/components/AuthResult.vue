@@ -19,7 +19,7 @@ const failuresHeading = 'Authentication Failed';
 const successSubText =
   'Please press enter on your computer to continue logging in.';
 const failureSubText =
-  "This could be because you don't have access to the computer you're trying to log into.";
+  'This could be because you don\'t have access to the computer you\'re trying to log into.';
 </script>
 
 <style scoped>

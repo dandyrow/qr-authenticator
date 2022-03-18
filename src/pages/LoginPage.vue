@@ -11,9 +11,7 @@
             position="floating"
           >
             Username
-            <span v-if="usernameErr">
-              - Please enter your username
-            </span>
+            <span v-if="usernameErr"> - Please enter your username </span>
           </ion-label>
           <ion-input v-model="username" />
         </ion-item>
@@ -25,9 +23,7 @@
             position="floating"
           >
             Password
-            <span v-if="passwordErr">
-              - Please enter your password
-            </span>
+            <span v-if="passwordErr"> - Please enter your password </span>
           </ion-label>
           <ion-input
             v-model="password"
@@ -50,14 +46,20 @@
 <script setup lang="ts">
 import { IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/vue';
 import { ref } from 'vue';
-import { Router, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import {
+  RouteLocationNormalizedLoaded,
+  Router,
+  useRoute,
+  useRouter,
+} from 'vue-router';
 
 import IntroModal from '@/components/modals/IntroModal.vue';
 import { fetchTokens } from '@/api/auth.api';
+import { useAuth } from '@/stores/auth.store';
 
-const store = useStore();
+const authStore = useAuth();
 const router: Router = useRouter();
+const route: RouteLocationNormalizedLoaded = useRoute();
 
 const username = ref<string>('');
 const usernameErr = ref<boolean>(false);
@@ -72,10 +74,14 @@ async function submit() {
     return;
   }
 
-  const { accessToken, refreshToken } = await fetchTokens(username.value, password.value);
+  const res = await fetchTokens(username.value, password.value);
+  const { accessToken } = await res.json();
+  console.log(accessToken);
+  authStore.setAccessToken(accessToken);
 
-  if (username.value === 'dandyrow' && password.value === 'manbob') {
-    router.replace('/tabs/scan');
+  if (authStore.tokenValid) {
+    const redirectPath = route.query.redirect?.toString() ?? '/tabs/scan';
+    router.replace(redirectPath);
   }
 }
 </script>

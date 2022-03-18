@@ -1,3 +1,4 @@
+import { useSettings } from './../stores/settings.store';
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { Router, RouteRecordRaw } from 'vue-router';
 import TabsPage from '@/components/base/Tabs.vue';
@@ -6,7 +7,7 @@ import Paths from './routePaths';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: Paths.LOGIN,
+    redirect: `${Paths.TABS}/scan`,
   },
   {
     path: Paths.LOGIN,
@@ -15,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: Paths.TABS,
     component: TabsPage,
-    meta: { requiredAuth: true },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'account',
@@ -36,6 +37,17 @@ const routes: Array<RouteRecordRaw> = [
 const router: Router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach(async (to, from) => {
+  const settingsStore = useSettings();
+
+  if (to.meta.requiresAuth && !settingsStore.loggedIn) {
+    return {
+      path: Paths.LOGIN,
+      query: { redirect: to.fullPath },
+    };
+  }
 });
 
 export default router;

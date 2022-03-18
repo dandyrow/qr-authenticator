@@ -13,17 +13,17 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useStore } from 'vuex';
 
 import BaseModal from './BaseModal.vue';
+import { useSettings } from '@/stores/settings.store';
 
-const store = useStore();
+const settingsStore = useSettings();
 
 const isOpen = computed(() => {
-  return !store.getters.hasSeenIntro;
+  return !settingsStore.seenIntro;
 });
 
 function close() {
-  store.commit('setSeenIntro', true);
+  settingsStore.seenIntro = true;
 }
 </script>

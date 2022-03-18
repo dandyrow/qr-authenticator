@@ -7,7 +7,10 @@
         :md="ellipsisVertical"
       />
     </ion-button>
-    <ion-popover show-backdrop="false" trigger="trigger-button">
+    <ion-popover
+      show-backdrop="false"
+      trigger="trigger-button"
+    >
       <ion-list>
         <slot />
       </ion-list>
