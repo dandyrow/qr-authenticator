@@ -2,7 +2,9 @@
   <base-layout page-title="Account Info">
     <p><strong>User ID: </strong>{{ userId }}</p>
     <p><strong>Username: </strong>{{ username }}</p>
-    <IonButton @click="logout()">Logout</IonButton>
+    <IonButton @click="logout()">
+      Logout
+    </IonButton>
   </base-layout>
 </template>
 
