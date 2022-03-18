@@ -7,19 +7,11 @@ interface State {
   accessToken?: string;
   userId?: number;
   username?: string;
-  expiry?: Date;
+  expiry?: number;
 }
 
 export const useAuth = defineStore('auth', {
   state: (): State => ({}),
-  getters: {
-    tokenValid: (state) => {
-      if (!state.expiry || state.expiry.getTime() < Date.now()) {
-        return false;
-      }
-      return true;
-    },
-  },
 
   actions: {
     async setAccessToken(accessToken: string) {
@@ -28,9 +20,20 @@ export const useAuth = defineStore('auth', {
       const payload = jwt_decode<AccessTokenPayload>(accessToken);
       this.userId = payload.userId;
       this.username = payload.username;
-      this.expiry = new Date(payload.exp * 1000);
-      
+      this.expiry = payload.exp * 1000;
+
       const settingsStore = useSettings();
+    },
+
+    tokenValid() {
+      return this.expiry ? this.expiry > Date.now() : false;
+    },
+
+    clearAccessToken() {
+      this.accessToken = undefined;
+      this.userId = undefined;
+      this.username = undefined;
+      this.expiry = undefined;
     },
   },
 });

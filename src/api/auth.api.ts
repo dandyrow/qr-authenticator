@@ -37,16 +37,28 @@ export async function refreshAccessToken(redirectPath?: string): Promise<void> {
     const { accessToken } = await res.json();
     auth.setAccessToken(accessToken);
   } catch (err) {
-    console.error(`Error refreshing access token: ${err}. Redirecting to login...`);
+    console.error(
+      `Error refreshing access token: ${err}. Redirecting to login...`,
+    );
     //TODO: create toast informing the user they have been logged out
     router.replace(`/login?redirect=${redirectPath}`);
   }
 }
 
-export async function postAuthSuccess(authPayload: any): Promise<Response | undefined> {
+export async function clearRefreshToken(): Promise<Response | undefined> {
+  try {
+    return await fetch('http://localhost:8080/user/logout');
+  } catch (err) {
+    console.error('Error connecting to server. Unable to logout');
+  }
+}
+
+export async function postAuthSuccess(
+  authPayload: any,
+): Promise<Response | undefined> {
   const auth = useAuth();
 
-  if (!auth.tokenValid) {
+  if (!auth.tokenValid()) {
     await refreshAccessToken();
   }
 
