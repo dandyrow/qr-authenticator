@@ -13,7 +13,10 @@ describe('auth store', () => {
     const auth = useAuth();
 
     expect(auth.accessToken).toBeUndefined();
-    expect(auth.tokenValid).toBeFalsy();
+    expect(auth.userId).toBeUndefined();
+    expect(auth.username).toBeUndefined();
+    expect(auth.expiry).toBeUndefined();
+    expect(auth.tokenValid()).toBeFalsy();
   });
 
   it('sets access token', () => {
@@ -25,22 +28,35 @@ describe('auth store', () => {
     expect(auth.accessToken).toEqual(testToken);
     expect(auth.userId).toEqual(1);
     expect(auth.username).toEqual('daniel');
-    expect(auth.expiry?.getTime()).toEqual(testDate.getTime());
+    expect(auth.expiry).toEqual(testDate.getTime());
   });
 
   it('checks invalid token returns false', () => {
     const auth = useAuth();
 
-    auth.expiry = new Date(Date.now() - 1800000);
+    auth.expiry = Date.now() - 1800000;
 
-    expect(auth.tokenValid).toBeFalsy();
+    expect(auth.tokenValid()).toBeFalsy();
   });
 
   it('checks valid token returns true', () => {
     const auth = useAuth();
 
-    auth.expiry = new Date(Date.now() + 1800000);
+    auth.expiry = Date.now() + 1800000;
 
-    expect(auth.tokenValid).toBeTruthy();
+    expect(auth.tokenValid()).toBeTruthy();
+  });
+
+  it('clears access token', () => {
+    const auth = useAuth();
+
+    auth.setAccessToken(testToken);
+    auth.clearAccessToken();
+
+    expect(auth.accessToken).toBeUndefined();
+    expect(auth.userId).toBeUndefined();
+    expect(auth.username).toBeUndefined();
+    expect(auth.expiry).toBeUndefined();
+    expect(auth.tokenValid()).toBeFalsy();
   });
 });
