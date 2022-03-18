@@ -54,7 +54,7 @@ import {
 } from 'vue-router';
 
 import IntroModal from '@/components/modals/IntroModal.vue';
-import { fetchTokens } from '@/api/auth.api';
+import { login } from '@/api/auth.api';
 import { useAuth } from '@/stores/auth.store';
 
 const authStore = useAuth();
@@ -75,7 +75,7 @@ async function submit() {
   }
 
   try {
-    const res = await fetchTokens(username.value, password.value);
+    const res = await login(username.value, password.value);
     const { accessToken } = await res.json();
     console.log(accessToken);
     authStore.setAccessToken(accessToken);

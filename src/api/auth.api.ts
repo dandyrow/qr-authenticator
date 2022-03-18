@@ -1,3 +1,4 @@
+import router from '@/router';
 import { useAuth } from '@/stores/auth.store';
 
 const authUrl = 'http://localhost:8080/user/login';
@@ -7,33 +8,57 @@ interface Tokens {
   refreshToken: string;
 }
 
-export async function fetchTokens(
+export async function login(
   username: string,
   password: string,
 ): Promise<Response> {
-  console.log(`Username: ${username}, Password: ${password}`);
-  const res = await fetch(authUrl, {
+  return fetch(authUrl, {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   });
-
-  return res;
 }
 
-function _getTokenHeader(): string {
-  const store = useAuth();
-  return store.accessToken ?? '';
+export async function refreshAccessToken(redirectPath?: string): Promise<void> {
+  try {
+    console.log('Refreshing access token');
+
+    const auth = useAuth();
+    const res = await fetch('http://localhost:8080/user/refresh', {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (!res || !res.ok) {
+      throw Error('Token Refresh Response: error or unauthorised');
+    }
+
+    const { accessToken } = await res.json();
+    auth.setAccessToken(accessToken);
+  } catch (err) {
+    console.error(`Error refreshing access token: ${err}. Redirecting to login...`);
+    //TODO: create toast informing the user they have been logged out
+    router.replace(`/login?redirect=${redirectPath}`);
+  }
 }
 
-export async function postAuthSuccess(authPayload: any) {
-  const res = await fetch('http://localhost:8080/auth', {
-    method: 'POST',
-    // headers: {
-    //   'Authorization': `Bearer ${_getTokenHeader()}`,
-    // },
-    body: JSON.stringify(authPayload),
-  });
+export async function postAuthSuccess(authPayload: any): Promise<Response | undefined> {
+  const auth = useAuth();
 
-  return res;
+  if (!auth.tokenValid) {
+    await refreshAccessToken();
+  }
+
+  if (auth.accessToken) {
+    return fetch('http://localhost:8080/auth', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        authorization: `Bearer ${auth.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(authPayload),
+    });
+  }
 }

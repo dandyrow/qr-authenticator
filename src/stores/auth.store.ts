@@ -31,7 +31,6 @@ export const useAuth = defineStore('auth', {
       this.expiry = new Date(payload.exp * 1000);
       
       const settingsStore = useSettings();
-      settingsStore.loggedIn = true;
     },
   },
 });

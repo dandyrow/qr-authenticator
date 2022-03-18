@@ -1,7 +1,7 @@
-import { useSettings } from './../stores/settings.store';
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { Router, RouteRecordRaw } from 'vue-router';
 import TabsPage from '@/components/base/Tabs.vue';
+import { refreshAccessToken } from '@/api/auth.api';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -38,14 +38,9 @@ const router: Router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from) => {
-  const settingsStore = useSettings();
-
-  if (to.meta.requiresAuth && !settingsStore.loggedIn) {
-    return {
-      path: '/login',
-      query: { redirect: to.fullPath },
-    };
+router.beforeEach(async (to) => {
+  if (to.meta.requiresAuth) {
+    await refreshAccessToken(to.fullPath);
   }
 });
 
