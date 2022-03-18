@@ -74,14 +74,18 @@ async function submit() {
     return;
   }
 
-  const res = await fetchTokens(username.value, password.value);
-  const { accessToken } = await res.json();
-  console.log(accessToken);
-  authStore.setAccessToken(accessToken);
+  try {
+    const res = await fetchTokens(username.value, password.value);
+    const { accessToken } = await res.json();
+    console.log(accessToken);
+    authStore.setAccessToken(accessToken);
 
-  if (authStore.tokenValid) {
-    const redirectPath = route.query.redirect?.toString() ?? '/tabs/scan';
-    router.replace(redirectPath);
+    if (authStore.tokenValid) {
+      const redirectPath = route.query.redirect?.toString() ?? '/tabs/scan';
+      router.replace(redirectPath);
+    }
+  } catch (err) {
+    console.error(`Error logging in: ${err}`);
   }
 }
 </script>
