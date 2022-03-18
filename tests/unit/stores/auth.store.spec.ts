@@ -4,7 +4,7 @@ import { setActivePinia, createPinia } from 'pinia';
 const testToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiZGFuaWVsIiwiaWF0Ijo5NTI5MDU2MDAsImV4cCI6OTUyOTkxOTk5fQ.2bl3wtdtJk34YdPM_nxx42zDtrN91l3jI8M_WS-tWlc';
 
-describe('authGetters', () => {
+describe('auth store', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
