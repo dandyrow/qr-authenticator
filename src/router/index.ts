@@ -1,3 +1,4 @@
+import { useAuth } from '@/stores/auth.store';
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { Router, RouteRecordRaw } from 'vue-router';
 import TabsPage from '@/components/base/Tabs.vue';
@@ -39,7 +40,9 @@ const router: Router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  if (to.meta.requiresAuth) {
+  const auth = useAuth();
+  
+  if (to.meta.requiresAuth && !auth.tokenValid()) {
     await refreshAccessToken(to.fullPath);
   }
 });
