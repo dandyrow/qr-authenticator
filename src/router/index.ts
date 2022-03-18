@@ -2,19 +2,18 @@ import { useSettings } from './../stores/settings.store';
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { Router, RouteRecordRaw } from 'vue-router';
 import TabsPage from '@/components/base/Tabs.vue';
-import Paths from './routePaths';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: `${Paths.TABS}/scan`,
+    redirect: '/tabs/scan',
   },
   {
-    path: Paths.LOGIN,
+    path: '/login',
     component: () => import('@/pages/LoginPage.vue'),
   },
   {
-    path: Paths.TABS,
+    path: '/tabs',
     component: TabsPage,
     meta: { requiresAuth: true },
     children: [
@@ -44,7 +43,7 @@ router.beforeEach(async (to, from) => {
 
   if (to.meta.requiresAuth && !settingsStore.loggedIn) {
     return {
-      path: Paths.LOGIN,
+      path: '/login',
       query: { redirect: to.fullPath },
     };
   }
