@@ -12,6 +12,7 @@
     />
     <AuthModal
       :is-open="authIsOpen"
+      :qr-content="qrContent"
       @close="modalClosed"
     />
   </BaseLayout>
@@ -28,6 +29,7 @@ import AuthModal from '@/components/modals/AuthModal.vue';
 
 const cameraPermission = ref(true);
 const authIsOpen = ref(false);
+const qrContent = ref('');
 
 const qrScanner = new QRScanner();
 const alertButtons = [{
@@ -46,6 +48,9 @@ async function scan() {
   if (cameraPermission.value) {
     const result = await qrScanner.startScan();
     authIsOpen.value = true;
+    if (result && result.content) {
+      qrContent.value = result.content;
+    }
   }
 }
 

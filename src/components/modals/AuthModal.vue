@@ -22,9 +22,11 @@ import { AvailableResult, NativeBiometric } from 'capacitor-native-biometric';
 import PinPad from '../PinPad.vue';
 import BaseModal from './BaseModal.vue';
 import AuthResult from '../AuthResult.vue';
+import { postAuthSuccess } from '@/api/auth.api';
 
 const props = defineProps<{
   isOpen: boolean;
+  qrContent: string;
 }>();
 
 const emits = defineEmits<{
@@ -66,10 +68,22 @@ async function biometrics() {
 
   if (isAvailable) {
     await NativeBiometric.verifyIdentity(biometricOptions).then(() => {
+
       authenticating.value = false;
       authSuccess.value = true;
     });
   }
+}
+
+async function sendAuth(qrContent: string) {
+  const res = await postAuthSuccess(qrContent);
+  if (res.ok) {
+    authenticating.value = false;
+    authSuccess.value = true;
+    return;
+  }
+  authenticating.value = false;
+  authSuccess.value = false;
 }
 
 watch(isOpen, (newValue, _) => {
