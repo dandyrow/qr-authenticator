@@ -1,7 +1,7 @@
 import router from '@/router';
 import { useAuth } from '@/stores/auth.store';
 
-const authUrl = 'http://localhost:8080/user/login';
+const authUrl = 'https://auth.daniellowry.co.uk';
 
 interface Tokens {
   accessToken: string;
@@ -12,7 +12,8 @@ export async function login(
   username: string,
   password: string,
 ): Promise<Response> {
-  return fetch(authUrl, {
+  console.log(`Username: ${username} and password: ${password}`);
+  return fetch(`${authUrl}/user/login`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -25,7 +26,7 @@ export async function refreshAccessToken(redirectPath?: string): Promise<void> {
     console.log('Refreshing access token');
 
     const auth = useAuth();
-    const res = await fetch('http://localhost:8080/user/refresh', {
+    const res = await fetch(`${authUrl}/user/refresh`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -47,7 +48,7 @@ export async function refreshAccessToken(redirectPath?: string): Promise<void> {
 
 export async function clearRefreshToken(): Promise<Response | undefined> {
   try {
-    return await fetch('http://localhost:8080/user/logout');
+    return await fetch(`${authUrl}/user/logout`);
   } catch (err) {
     console.error('Error connecting to server. Unable to logout');
   }
@@ -63,14 +64,15 @@ export async function postAuthSuccess(
   }
 
   if (auth.accessToken) {
-    return fetch('http://localhost:8080/auth', {
+    console.log(authPayload);
+    return fetch(`${authUrl}/auth`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         authorization: `Bearer ${auth.accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(authPayload),
+      body: authPayload,
     });
   }
 }
