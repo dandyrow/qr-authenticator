@@ -53,8 +53,7 @@ function closeModal() {
 
 function checkPin(pinNum: number) {
   if (pinNum === 1234) {
-    authenticating.value = false;
-    authSuccess.value = true;
+    sendAuth();
   } else {
     //TODO: Needs changed to show error about pin being wrong instead of complete auth failure
     authenticating.value = false;
@@ -67,23 +66,26 @@ async function biometrics() {
   const isAvailable: boolean = result.isAvailable;
 
   if (isAvailable) {
-    await NativeBiometric.verifyIdentity(biometricOptions).then(() => {
-
-      authenticating.value = false;
-      authSuccess.value = true;
-    });
+    await NativeBiometric.verifyIdentity(biometricOptions).then(() => sendAuth());
   }
 }
 
-async function sendAuth(qrContent: string) {
-  const res = await postAuthSuccess(qrContent);
-  if (res.ok) {
+async function sendAuth() {
+  try {
+    console.log(props.qrContent);
+    const res = await postAuthSuccess(props.qrContent);
+    console.log(res);
+    if (res && res.ok) {
+      authenticating.value = false;
+      authSuccess.value = true;
+      return;
+    }
+    throw new Error('Authentication rejected');
+  } catch (err) {
+    console.error(err);
     authenticating.value = false;
-    authSuccess.value = true;
-    return;
+    authSuccess.value = false;
   }
-  authenticating.value = false;
-  authSuccess.value = false;
 }
 
 watch(isOpen, (newValue, _) => {

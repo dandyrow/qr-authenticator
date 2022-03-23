@@ -47,9 +47,9 @@ async function scan() {
   cameraPermission.value = await qrScanner.checkPermissions();
   if (cameraPermission.value) {
     const result = await qrScanner.startScan();
-    authIsOpen.value = true;
     if (result && result.content) {
       qrContent.value = result.content;
+      authIsOpen.value = true;
     }
   }
 }
