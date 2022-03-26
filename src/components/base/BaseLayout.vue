@@ -5,7 +5,6 @@
         <ion-title data-title="title">
           {{ pageTitle }}
         </ion-title>
-        <ElipsesMenu />
       </ion-toolbar>
     </ion-header>
     <ion-content 
@@ -33,7 +32,6 @@ import {
   IonTitle,
   IonContent,
 } from '@ionic/vue';
-import ElipsesMenu from './ElipsesMenu.vue';
 
 interface Props {
   pageTitle: string;
