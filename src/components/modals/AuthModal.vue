@@ -6,6 +6,8 @@
   >
     <PinPad
       v-if="authenticating"
+      :pin-text="error ? 'Incorrect PIN, please try again' : 'Please enter your PIN or use biometrics'"
+      :error="error"
       @pin-entered="checkPin"
     />
     <AuthResult
@@ -23,6 +25,7 @@ import PinPad from '../PinPad.vue';
 import BaseModal from './BaseModal.vue';
 import AuthResult from '../AuthResult.vue';
 import { postAuthSuccess } from '@/api/auth.api';
+import { useSettings } from '@/stores/settings.store';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -35,8 +38,10 @@ const emits = defineEmits<{
 
 const authenticating = ref(true);
 const authSuccess = ref(false);
+const error = ref(false);
 const title = ref('Authenticate');
 const { isOpen } = toRefs(props);
+const settings = useSettings();
 
 const biometricOptions = {
   reason: 'To prove users identity',
@@ -52,12 +57,10 @@ function closeModal() {
 }
 
 function checkPin(pinNum: number) {
-  if (pinNum === 1234) {
+  if (pinNum === settings.pin) {
     sendAuth();
   } else {
-    //TODO: Needs changed to show error about pin being wrong instead of complete auth failure
-    authenticating.value = false;
-    authSuccess.value = false;
+    error.value = true;
   }
 }
 

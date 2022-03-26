@@ -1,7 +1,10 @@
 <template>
   <div class="pin-container">
-    <ion-label id="pin-label">
-      Please enter your PIN or use biometrics
+    <ion-label
+      id="pin-label"
+      :color="error ? 'danger' : ''"
+    >
+      {{ pinText }}
     </ion-label>
 
     <div class="pin-display">
@@ -52,13 +55,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { IonButton, IonIcon, IonLabel } from '@ionic/vue';
 import {
   backspaceOutline,
   radioButtonOn,
   radioButtonOff,
 } from 'ionicons/icons';
+
+const props = defineProps<{
+  pinText: string,
+  error: boolean,
+}>();
 
 const emits = defineEmits<{
   (e: 'pinEntered', pin: number): void;
@@ -72,6 +80,7 @@ function enterNum(num: number) {
   if (length === 4) {
     const pinString = pin.value.toString().replaceAll(',', '');
     emits('pinEntered', parseInt(pinString));
+    pin.value.length = 0;
   }
 }
 </script>
